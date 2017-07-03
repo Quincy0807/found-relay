@@ -7,7 +7,7 @@ import { Resolver } from '../../src';
 
 import { createEnvironment } from './helpers';
 
-describe('prerender', () => {
+describe('render', () => {
   let environment;
 
   beforeEach(() => {
@@ -20,18 +20,19 @@ describe('prerender', () => {
       routeConfig: [{
         path: '/',
         query: graphql`
-          query prerender_Query {
+          query render_Query {
             widget {
               name
             }
           }
         `,
-        prerender: ({ props }) => {
+        render: ({ props }) => {
           if (props) {
             throw new RedirectException(`/${props.widget.name}`);
           }
+
+          return null;
         },
-        render: () => null,
       }],
       resolver: new Resolver(environment),
       render: createRender({}),
